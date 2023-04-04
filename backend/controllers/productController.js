@@ -7,8 +7,8 @@ exports.createProduct = async (req, res, next)=>{
     res.status(201).json({
         success:true,
         product
-    })
-}
+    });
+};
 
 
 // get all products
@@ -18,30 +18,33 @@ exports.getAllProducts = async(req,res,next)=>{
     res.status(200).json({
         success:true,
         products
-    })
-}
+    });
+};
 
 // get product details
 exports.getProductDetails = async (req, res, next) => {
     const product = await Product.findById(req.params.id);
   
     if (!product) {
-      return next(new ErrorHander("Product not found", 404));
+      return next(new ErrorHandler("Product not found", 404));
     }
-  
-    res.status(200).json({
-      success: true,
-      product,
-    });
-  };
+    else{
+        res.status(200).json({
+            success: true,
+            product,
+          });
+    }
+    
+};
 
 // update product -- admin
 exports.updateProduct = async(req,res,next)=>{
     let product = await Product.findById(req.params.id);
 
     if (!product) {
-        return next(new ErrorHander("Product not found", 404));
+        return next(new ErrorHandler("Product not found", 404));
     }
+
 
     product = await Product.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
@@ -57,19 +60,19 @@ exports.updateProduct = async(req,res,next)=>{
 
 // delete product
 exports.deleteProduct = async(req,res,next)=>{
+
     const product = await Product.findById(req.params.id);
-
+    
     if(!product){
-        return res.status(500).json({
-            success:false,
-            message : "product not found"
-        })
+        return next(new ErrorHandler("Product not found",404));
     }
-
-    await product.deleteOne();
-
-    res.status(200).json({
-        success:true,
-        message : "product deleted successfully"
-    })
-}
+    else{
+        //removing the obj
+        await Product.findByIdAndDelete(req.params.id);
+        //return keep or not needed
+        return res.status(200).json({
+            success : true,
+            message : "Product Deleted!"
+        })       
+    }
+};
