@@ -1,13 +1,18 @@
 const express = require("express");
-const app = express();
+const app = express(); //initializing express app
+app.use(express.json());//setup
+
 const errorMiddleware = require("./middleware/error");
 
-app.use(express.json());
-
-// Route imports
+//Route Imports
 const product = require("./routes/productRoute");
+// const user = require("./routes/userRoute");
 
+//postman url usgae
 app.use("/api/v1",product);
-// middleware for error
+// app.use("/api/v1",user)
+
+//Middleware for errors
 app.use(errorMiddleware);
+
 module.exports = app;
