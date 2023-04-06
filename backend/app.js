@@ -6,11 +6,11 @@ const errorMiddleware = require("./middleware/error");
 
 //Route Imports
 const product = require("./routes/productRoute");
-// const user = require("./routes/userRoute");
+const user = require("./routes/userRoute");
 
-//postman url usgae
+//postman url usage
 app.use("/api/v1",product);
-// app.use("/api/v1",user)
+app.use("/api/v1",user)
 
 //Middleware for errors
 app.use(errorMiddleware);
